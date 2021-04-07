@@ -17,11 +17,11 @@ class CreateTestsTable extends Migration
             $table->id();
             $table->string('applicationId');
             $table->string('androidVersion');
-            $table->string('applicationVersion');
+            $table->string('applicationVersion')->nullable();
             $table->boolean('forced')->default(false);
-            $table->string('dynamicAssignedTo');
-            $table->dateTime('dynamicAssignedAt');
-            $table->dateTime('dynamicDoneAt');
+            $table->string('dynamicAssignedTo')->nullable();
+            $table->dateTime('dynamicAssignedAt')->nullable();
+            $table->dateTime('dynamicDoneAt')->nullable();
             $table->string('status')->default('available');
             $table->timestamps();
         });
