@@ -15,14 +15,15 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('applicationId');
-            $table->string('androidVersion');
-            $table->string('applicationVersion')->nullable();
+            $table->string('application_id');
+            $table->string('android_version');
+            $table->string('application_version')->nullable();
             $table->boolean('forced')->default(false);
-            $table->string('dynamicAssignedTo')->nullable();
-            $table->dateTime('dynamicAssignedAt')->nullable();
-            $table->dateTime('dynamicDoneAt')->nullable();
+            $table->string('dynamic_assigned_to')->nullable();
+            $table->dateTime('dynamic_assigned_at')->nullable();
+            $table->dateTime('dynamic_done_at')->nullable();
             $table->string('status')->default('available');
+            $table->json('result')->nullable();
             $table->timestamps();
         });
     }

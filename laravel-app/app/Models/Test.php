@@ -10,17 +10,17 @@ class Test extends Model
     use HasFactory;
 
     protected $fillable = [
-        'applicationId',
-        'androidVersion',
-        'applicationVersion',
+        'application_id',
+        'android_version',
+        'application_version',
         'forced',
-        'dynamicAssignedTo',
-        'dynamicAssignedAt',
-        'dynamicDoneAt',
+        'dynamic_assigned_to',
+        'dynamic_assigned_at',
+        'dynamic_done_at',
     ];
 
     protected $casts = [
-        'dynamicAssignedAt' => 'datetime',
-        'dynamicDoneAt' => 'datetime',
+        'dynamic_assigned_at' => 'datetime',
+        'dynamic_done_at' => 'datetime',
     ];
 }
