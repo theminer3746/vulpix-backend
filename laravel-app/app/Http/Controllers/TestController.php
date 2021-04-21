@@ -60,9 +60,9 @@ class TestController extends Controller
         $test->result = $request->input('result');
         $test->save();
 
-        $appInfo = $request->merge(['categorySlug' => 'social-networking']); // TODO : Remove this when frontend has more category types
+        $request->merge(['categorySlug' => 'social-networking']); // TODO : Remove this when frontend has more category types
 
-        $addAppResponse = Http::post('https://vulpix-backend.herokuapp.com/api/application', $appInfo);
+        $addAppResponse = Http::post('https://vulpix-backend.herokuapp.com/api/application', $request->input('appInfo'));
         Log::debug("Add app reponse : " . $addAppResponse->body());
 
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
