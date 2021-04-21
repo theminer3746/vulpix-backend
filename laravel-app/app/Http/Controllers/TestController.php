@@ -45,7 +45,7 @@ class TestController extends Controller
 
     public function addResult(Request $request)
     {
-        Log::debug("Add result request : $request->all()");
+        Log::debug("Add result request : " . $request->all());
 
         $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
             ->orderBy('created_at', 'desc')
