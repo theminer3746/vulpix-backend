@@ -45,7 +45,7 @@ class TestController extends Controller
 
     public function addResult(Request $request)
     {
-        Log::debug("Add result request : " . $request->all());
+        Log::debug("Add result request : " . print_r($request->all(), true));
 
         $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
             ->orderBy('created_at', 'desc')
@@ -60,14 +60,13 @@ class TestController extends Controller
         $test->result = $request->input('result');
         $test->save();
 
-        $appInfo = $request->input('appInfo');
-        $appInfo['categorySlug'] = 'social-networking';
+        $appInfo = $request->merge(['categorySlug' => 'social-networking']); // TODO : Remove this when frontend has more category types
 
         $addAppResponse = Http::post('https://vulpix-backend.herokuapp.com/api/application', $appInfo);
-        Log::debug("Add app reponse : $addAppResponse");
+        Log::debug("Add app reponse : " . $addAppResponse->body());
 
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
-        Log::debug("Add result reponse : $addResultResponse");
+        Log::debug("Add result reponse : " . $addResultResponse->body());
 
         return response()->json();
     }
