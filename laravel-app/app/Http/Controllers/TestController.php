@@ -58,9 +58,14 @@ class TestController extends Controller
         $test->result = $request->input('result');
         $test->save();
 
-        $response = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
+        $appInfo = $request->input('appInfo');
+        $appInfo['categorySlug'] = 'social-networking';
 
-        Log::debug("Add result reponse : $response");
+        $addAppResponse = Http::post('https://vulpix-backend.herokuapp.com/api/application', $appInfo);
+        Log::debug("Add app reponse : $addAppResponse");
+
+        $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
+        Log::debug("Add result reponse : $addResultResponse");
 
         return response()->json();
     }
