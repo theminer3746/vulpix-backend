@@ -20,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('tests', [App\Http\Controllers\TestController::class, 'createTest']);
 Route::get('tests', [App\Http\Controllers\TestController::class, 'getTest']);
+Route::post('results', [App\Http\Controllers\TestController::class, 'addResult']);

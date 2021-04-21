@@ -17,6 +17,8 @@ class Test extends Model
         'dynamic_assigned_to',
         'dynamic_assigned_at',
         'dynamic_done_at',
+        'status',
+        'result',
     ];
 
     protected $casts = [

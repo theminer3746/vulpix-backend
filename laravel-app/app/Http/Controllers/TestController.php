@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Test;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
 {
@@ -39,5 +41,27 @@ class TestController extends Controller
         }
 
         return response()->json($query->get());
+    }
+
+    public function addResult(Request $request)
+    {
+        $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
+            ->orderBy('created_at', 'desc')
+            ->firstOrFail();
+
+        if ($request->input('status') === 'success') {
+            $test->status = 'done';
+        } else {
+            $test->status = 'error';
+        }
+
+        $test->result = $request->input('result');
+        $test->save();
+
+        $response = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
+
+        Log::debug("Add result reponse : $response");
+
+        return response()->json();
     }
 }
