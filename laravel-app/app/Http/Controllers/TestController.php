@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Test;
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -67,6 +68,10 @@ class TestController extends Controller
 
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
         Log::debug("Add result reponse : " . $addResultResponse->body());
+
+        if ($addAppResponse->failed() || $addResultResponse->failed()) {
+            throw new Exception("Send failed");
+        }
 
         return response()->json();
     }
