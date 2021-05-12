@@ -41,7 +41,23 @@ class TestController extends Controller
             $query = $query->limit($request->limit);
         }
 
-        return response()->json($query->get());
+        $result = $query->get();
+
+        if ($query->count() === 0)
+        {
+            return response()->json([], 404);
+        }
+
+        if ($request->input('mark_as_running') === true)
+        {
+            foreach ($result as $item)
+            {
+                $item->status = 'running';
+                $item->save();
+            }
+        }
+
+        return response()->json($result);
     }
 
     public function addResult(Request $request)
