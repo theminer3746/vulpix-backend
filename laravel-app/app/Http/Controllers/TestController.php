@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
 {
-    public function __construct(public Test $test)
+    public function __construct(private Test $test)
     {
     }
 
@@ -48,7 +48,7 @@ class TestController extends Controller
             return response()->json([], 404);
         }
 
-        if ($request->input('mark_as_running') === true)
+        if ((bool)$request->input('mark_as_running') === true)
         {
             foreach ($result as $item)
             {
