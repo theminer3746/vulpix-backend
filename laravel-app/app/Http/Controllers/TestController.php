@@ -66,9 +66,28 @@ class TestController extends Controller
     {
         Log::debug("Add result request : " . print_r($request->all(), true));
 
-        $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
-            ->orderBy('created_at', 'desc')
-            ->firstOrFail();
+        $resultForAppVerExists = $this->test
+            ->where('application_id', $request->input('appInfo.identifier'))
+            ->where('application_version', $request->input('appInfo.version'))
+            ->exists();
+
+        $test = null;
+        if ($resultForAppVerExists)
+        {
+            // We know about this version of the app, update the old result
+            $test = $this->test
+                ->where('application_id', $request->input('appInfo.identifier'))
+                ->where('application_version', $request->input('appInfo.version'))
+                ->firstOrFail();
+        }
+        else
+        {
+            // New version of the app
+            $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
+                ->where('application_version', null)
+                ->orderBy('created_at', 'desc')
+                ->firstOrFail();
+        }
 
         if ($request->input('status') === 'success') {
             $test->status = 'done';
