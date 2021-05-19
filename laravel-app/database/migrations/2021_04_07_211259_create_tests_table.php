@@ -19,11 +19,13 @@ class CreateTestsTable extends Migration
             $table->string('android_version');
             $table->string('application_version')->nullable();
             $table->boolean('forced')->default(false);
-            $table->string('dynamic_assigned_to')->nullable();
-            $table->dateTime('dynamic_assigned_at')->nullable();
+            $table->string('assigned_to')->nullable();
+            $table->dateTime('assigned_at')->nullable();
             $table->dateTime('dynamic_done_at')->nullable();
+            $table->dateTime('static_done_at')->nullable();
             $table->string('status')->default('available');
-            $table->json('result')->nullable();
+            $table->json('result_dynamic')->nullable();
+            $table->json('result_static')->nullable();
             $table->timestamps();
         });
     }

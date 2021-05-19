@@ -14,15 +14,19 @@ class Test extends Model
         'android_version',
         'application_version',
         'forced',
-        'dynamic_assigned_to',
-        'dynamic_assigned_at',
+        'assigned_to',
+        'assigned_at',
         'dynamic_done_at',
+        'static_done_at',
         'status',
-        'result',
+        'result_dynamic',
+        'result_static',
     ];
 
     protected $casts = [
-        'dynamic_assigned_at' => 'datetime',
+        'forced' => 'boolean'
+        'assigned_at' => 'datetime',
         'dynamic_done_at' => 'datetime',
+        'static_done_at' => 'datetime',
     ];
 }
