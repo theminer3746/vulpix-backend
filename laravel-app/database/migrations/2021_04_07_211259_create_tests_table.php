@@ -24,6 +24,8 @@ class CreateTestsTable extends Migration
             $table->dateTime('dynamic_done_at')->nullable();
             $table->dateTime('static_done_at')->nullable();
             $table->string('status')->default('available');
+            $table->string('status_dynamic')->default('available');
+            $table->string('status_static')->default('available');
             $table->json('result_dynamic')->nullable();
             $table->json('result_static')->nullable();
             $table->timestamps();

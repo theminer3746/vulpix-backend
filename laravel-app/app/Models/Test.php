@@ -19,6 +19,8 @@ class Test extends Model
         'dynamic_done_at',
         'static_done_at',
         'status',
+        'status_dynamic',
+        'status_static',
         'result_dynamic',
         'result_static',
     ];

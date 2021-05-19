@@ -53,6 +53,8 @@ class TestController extends Controller
             foreach ($result as $item)
             {
                 $item->status = 'running';
+                $item->status_dynamic = 'running';
+                $item->status_static = 'running';
                 $item->save();
             }
         }
@@ -76,11 +78,13 @@ class TestController extends Controller
 
         if($request->input('testingMethods') == 'STATIC_ONLY')
         {
+            $test->status_static = ($request->input('status') === 'success') ? 'done' : 'error';
             $test->result_static = $request->input('result');
         }
 
         if($request->input('testingMethods') == 'DYNAMIC_ONLY')
         {
+            $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : 'error';
             $test->result_dynamic = $request->input('result');
         }
 
