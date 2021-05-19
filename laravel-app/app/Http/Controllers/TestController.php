@@ -74,7 +74,16 @@ class TestController extends Controller
             $test->status = 'error';
         }
 
-        $test->result = $request->input('result');
+        if($request->input('testingMethods') == 'STATIC_ONLY')
+        {
+            $test->result_static = $request->input('result_static');
+        }
+
+        if($request->input('testingMethods') == 'DYNAMIC_ONLY')
+        {
+            $test->result_dynamic = $request->input('result_dynamic');
+        }
+
         $test->save();
 
         $addAppResponse = Http::post('https://vulpix-backend.herokuapp.com/api/application', $request->input('appInfo'));
