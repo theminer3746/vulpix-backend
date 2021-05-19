@@ -76,12 +76,12 @@ class TestController extends Controller
 
         if($request->input('testingMethods') == 'STATIC_ONLY')
         {
-            $test->result_static = $request->input('result_static');
+            $test->result_static = $request->input('result');
         }
 
         if($request->input('testingMethods') == 'DYNAMIC_ONLY')
         {
-            $test->result_dynamic = $request->input('result_dynamic');
+            $test->result_dynamic = $request->input('result');
         }
 
         $test->save();
