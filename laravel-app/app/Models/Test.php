@@ -26,7 +26,7 @@ class Test extends Model
     ];
 
     protected $casts = [
-        'forced' => 'boolean'
+        'forced' => 'boolean',
         'assigned_at' => 'datetime',
         'dynamic_done_at' => 'datetime',
         'static_done_at' => 'datetime',
