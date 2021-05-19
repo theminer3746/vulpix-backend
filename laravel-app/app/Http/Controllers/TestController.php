@@ -55,6 +55,9 @@ class TestController extends Controller
                 $item->status = 'running';
                 $item->status_dynamic = 'running';
                 $item->status_static = 'running';
+                $item->assigned_to = $request->bearerToken();
+                $item->assigned_at = now();
+
                 $item->save();
             }
         }
@@ -97,12 +100,14 @@ class TestController extends Controller
 
         if($request->input('testingMethods') == 'STATIC_ONLY')
         {
+            $test->static_done_at = now();
             $test->status_static = ($request->input('status') === 'success') ? 'done' : 'error';
             $test->result_static = $request->input('result');
         }
 
         if($request->input('testingMethods') == 'DYNAMIC_ONLY')
         {
+            $test->dynamic_done_at = now();
             $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : 'error';
             $test->result_dynamic = $request->input('result');
         }
