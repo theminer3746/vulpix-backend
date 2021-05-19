@@ -112,7 +112,12 @@ class TestController extends Controller
         $addAppResponse = Http::post('https://vulpix-backend.herokuapp.com/api/application', $request->input('appInfo'));
         Log::debug("Add app reponse : " . $addAppResponse->body());
 
-        $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $request->input('result'));
+        $result = array_merge([
+                'applicationId' => $request->input('appInfo.identifier'),
+                'version' => $request->input('appInfo.version'),
+                'testingMethods' => $request->input('testingMethods'),
+            ], $request->input('result'));
+        $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
 
         if ($addAppResponse->failed() || $addResultResponse->failed()) {
