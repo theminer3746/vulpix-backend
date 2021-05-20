@@ -90,6 +90,8 @@ class TestController extends Controller
                 ->where('application_version', null)
                 ->orderBy('created_at', 'desc')
                 ->firstOrFail();
+
+            $test->application_version = $request->input('result.version');
         }
 
         if ($request->input('status') === 'success') {
