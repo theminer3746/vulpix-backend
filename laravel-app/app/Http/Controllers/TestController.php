@@ -125,7 +125,7 @@ class TestController extends Controller
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
 
-        if ($addAppResponse->failed() || $addResultResponse->failed()) {
+        if ($addResultResponse->failed()) {
             throw new Exception("Send failed");
         }
 
