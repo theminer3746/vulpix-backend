@@ -98,14 +98,14 @@ class TestController extends Controller
             $test->status = 'error';
         }
 
-        if($request->input('testingMethods') == 'STATIC_ONLY')
+        if($request->input('testingMethod') == 'STATIC_ONLY')
         {
             $test->static_done_at = now();
             $test->status_static = ($request->input('status') === 'success') ? 'done' : 'error';
             $test->result_static = $request->input('result');
         }
 
-        if($request->input('testingMethods') == 'DYNAMIC_ONLY')
+        if($request->input('testingMethod') == 'DYNAMIC_ONLY')
         {
             $test->dynamic_done_at = now();
             $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : 'error';
@@ -120,7 +120,7 @@ class TestController extends Controller
         $result = array_merge([
                 'applicationId' => $request->input('appInfo.identifier'),
                 'version' => $request->input('appInfo.version'),
-                'testingMethods' => $request->input('testingMethods'),
+                'testingMethod' => $request->input('testingMethod'),
             ], $request->input('result'));
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
