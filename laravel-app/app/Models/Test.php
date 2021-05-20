@@ -23,6 +23,7 @@ class Test extends Model
         'status_static',
         'result_dynamic',
         'result_static',
+        'requester_email',
     ];
 
     protected $casts = [
