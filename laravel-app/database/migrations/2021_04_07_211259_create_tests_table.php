@@ -28,6 +28,7 @@ class CreateTestsTable extends Migration
             $table->string('status_static')->default('available');
             $table->json('result_dynamic')->nullable();
             $table->json('result_static')->nullable();
+            $table->string('requester_email')->nullable();
             $table->timestamps();
         });
     }

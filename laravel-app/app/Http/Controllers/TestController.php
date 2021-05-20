@@ -16,14 +16,16 @@ class TestController extends Controller
 
     public function createTest(Request $request)
     {
-        // $request->validate([
-        //     'application_id' => 'required|regex:/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/i',
-        // ]);
+        $request->validate([
+            // 'application_id' => 'required|regex:/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/i',
+            'email' => 'email:rfc'
+        ]);
 
         $this->test->create([
             'application_id' => $request->application_id,
             'android_version' => $request->android_version ?? '9.0',
             'forced' => $request->forced ?? false,
+            'requester_email' => $request->requester_email,
         ]);
 
         return response()->json([], 201);
@@ -123,6 +125,7 @@ class TestController extends Controller
                 'applicationId' => $request->input('appInfo.identifier'),
                 'version' => $request->input('appInfo.version'),
                 'testingMethod' => $request->input('testingMethod'),
+                'requesterEmail' => $test->requester_email
             ], $request->input('result'));
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
