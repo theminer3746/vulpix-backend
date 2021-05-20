@@ -71,7 +71,7 @@ class TestController extends Controller
 
         $resultForAppVerExists = $this->test
             ->where('application_id', $request->input('appInfo.identifier'))
-            ->where('application_version', $request->input('appInfo.version'))
+            ->where('application_version', $request->input('result.version'))
             ->exists();
 
         $test = null;
@@ -80,7 +80,7 @@ class TestController extends Controller
             // We know about this version of the app, update the old result
             $test = $this->test
                 ->where('application_id', $request->input('appInfo.identifier'))
-                ->where('application_version', $request->input('appInfo.version'))
+                ->where('application_version', $request->input('result.version'))
                 ->firstOrFail();
         }
         else
