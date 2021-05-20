@@ -105,14 +105,14 @@ class TestController extends Controller
         if($request->input('result.testingMethod') == 'STATIC_ONLY')
         {
             $test->static_done_at = now();
-            $test->status_static = ($request->input('status') === 'success') ? 'done' : $request->has('error') ? $request->input('error') : "UNSPECIFIED_ERROR";
+            $test->status_static = ($request->input('status') === 'success') ? 'done' : ($request->has('error')) ? $request->input('error') : "UNSPECIFIED_ERROR";
             $test->result_static = $request->input('result');
         }
 
         if($request->input('result.testingMethod') == 'DYNAMIC_ONLY')
         {
             $test->dynamic_done_at = now();
-            $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : $request->has('error') ? $request->input('error') : "UNSPECIFIED_ERROR";
+            $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : ($request->has('error')) ? $request->input('error') : "UNSPECIFIED_ERROR";
             $test->result_dynamic = $request->input('result');
         }
 
