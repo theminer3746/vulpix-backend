@@ -105,14 +105,14 @@ class TestController extends Controller
         if($request->input('result.testingMethod') == 'STATIC_ONLY')
         {
             $test->static_done_at = now();
-            $test->status_static = ($request->input('status') === 'success') ? 'done' : 'error';
+            $test->status_static = ($request->input('status') === 'success') ? 'done' : $request->has('error') ? $request->input('error') : "UNSPECIFIED_ERROR";
             $test->result_static = $request->input('result');
         }
 
         if($request->input('result.testingMethod') == 'DYNAMIC_ONLY')
         {
             $test->dynamic_done_at = now();
-            $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : 'error';
+            $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : $request->has('error') ? $request->input('error') : "UNSPECIFIED_ERROR";
             $test->result_dynamic = $request->input('result');
         }
 
@@ -125,7 +125,8 @@ class TestController extends Controller
                 'applicationId' => $request->input('appInfo.identifier'),
                 'version' => $request->input('appInfo.version'),
                 'testingMethod' => $request->input('testingMethod'),
-                'requesterEmail' => $test->requester_email
+                'requesterEmail' => $test->requester_email,
+                'error' => $request->input('error'),
             ], $request->input('result'));
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
