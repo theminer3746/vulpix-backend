@@ -17,7 +17,7 @@ class TestController extends Controller
     public function createTest(Request $request)
     {
         $request->validate([
-            // 'application_id' => 'required|regex:/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/i',
+            'application_id' => 'required|regex:/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/i',
             'email' => 'email:rfc'
         ]);
 
