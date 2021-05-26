@@ -45,15 +45,12 @@ class TestController extends Controller
 
         $result = $query->get();
 
-        if ($query->count() === 0)
-        {
+        if ($query->count() === 0) {
             return response()->json([], 404);
         }
 
-        if ((bool)$request->input('mark_as_running') === true)
-        {
-            foreach ($result as $item)
-            {
+        if ((bool)$request->input('mark_as_running') === true) {
+            foreach ($result as $item) {
                 $item->status = 'running';
                 $item->status_dynamic = 'running';
                 $item->status_static = 'running';
@@ -77,16 +74,18 @@ class TestController extends Controller
             ->exists();
 
         $test = null;
-        if ($resultForAppVerExists)
-        {
-            // We know about this version of the app, update the old result
+        if ($resultForAppVerExists) {
+            // We know about this version of the app
+
+            // Update the old result
             $test = $this->test
                 ->where('application_id', $request->input('appInfo.identifier'))
                 ->where('application_version', $request->input('result.version'))
                 ->firstOrFail();
-        }
-        else
-        {
+
+            // Mark the new result as duplicate 
+            // $this->test->findOrFail($request->uuid);
+        } else {
             // New version of the app
             $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
                 ->where('application_version', null)
@@ -102,15 +101,13 @@ class TestController extends Controller
             $test->status = 'error';
         }
 
-        if($request->input('result.testingMethod') == 'STATIC_ONLY')
-        {
+        if ($request->input('result.testingMethod') == 'STATIC_ONLY') {
             $test->static_done_at = now();
             $test->status_static = ($request->input('status') === 'success') ? 'done' : (($request->has('error')) ? $request->input('error') : "UNSPECIFIED_ERROR");
             $test->result_static = $request->input('result');
         }
 
-        if($request->input('result.testingMethod') == 'DYNAMIC_ONLY')
-        {
+        if ($request->input('result.testingMethod') == 'DYNAMIC_ONLY') {
             $test->dynamic_done_at = now();
             $test->status_dynamic = ($request->input('status') === 'success') ? 'done' : (($request->has('error')) ? $request->input('error') : "UNSPECIFIED_ERROR");
             $test->result_dynamic = $request->input('result');
@@ -122,12 +119,12 @@ class TestController extends Controller
         Log::debug("Add app reponse : " . $addAppResponse->body());
 
         $result = array_merge([
-                'applicationId' => $request->input('appInfo.identifier'),
-                'version' => $request->input('appInfo.version'),
-                'testingMethod' => $request->input('testingMethod'),
-                'requesterEmail' => $test->requester_email,
-                'error' => $request->input('error'),
-            ], $request->input('result'));
+            'applicationId' => $request->input('appInfo.identifier'),
+            'version' => $request->input('appInfo.version'),
+            'testingMethod' => $request->input('testingMethod'),
+            'requesterEmail' => $test->requester_email,
+            'error' => $request->input('error'),
+        ], $request->input('result'));
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
 
