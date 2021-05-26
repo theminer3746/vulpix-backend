@@ -32,4 +32,9 @@ class Test extends Model
         'dynamic_done_at' => 'datetime',
         'static_done_at' => 'datetime',
     ];
+
+    public function getLatestVersionAttribute()
+    {
+        return Test::where('application_id', $this->application_id)->orderByDesc('created_at')->first()?->application_version;
+    }
 }
