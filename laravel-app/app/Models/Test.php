@@ -33,6 +33,15 @@ class Test extends Model
         'static_done_at' => 'datetime',
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'latest_version',
+    ];
+
     public function getLatestVersionAttribute()
     {
         return Test::where('application_id', $this->application_id)->orderByDesc('created_at')->first()?->application_version;
