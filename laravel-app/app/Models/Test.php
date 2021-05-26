@@ -44,6 +44,14 @@ class Test extends Model
 
     public function getLatestVersionAttribute()
     {
-        return Test::where('application_id', $this->application_id)->orderByDesc('created_at')->first()?->application_version;
+        $applicationTestRequests = Test::where('application_id', $this->application_id)->orderByDesc('created_at')->cursor();
+
+        foreach ($applicationTestRequests as $app) {
+            if (!is_null($app->application_version)) {
+                return $app->application_version;
+            }
+        }
+
+        return null;
     }
 }
