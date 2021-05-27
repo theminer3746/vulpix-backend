@@ -81,6 +81,7 @@ class TestController extends Controller
             $test = $this->test
                 ->where('application_id', $request->input('appInfo.identifier'))
                 ->where('application_version', $request->input('result.version'))
+                ->orderByDesc('created_at')
                 ->firstOrFail();
 
             // Mark the new result as duplicate 
@@ -89,7 +90,7 @@ class TestController extends Controller
             // New version of the app
             $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
                 ->where('application_version', null)
-                ->orderBy('created_at', 'desc')
+                ->orderByDesc('created_at')
                 ->firstOrFail();
 
             $test->application_version = $request->input('result.version');
