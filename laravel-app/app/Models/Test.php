@@ -24,6 +24,7 @@ class Test extends Model
         'result_dynamic',
         'result_static',
         'requester_email',
+        'uuid',
     ];
 
     protected $casts = [
