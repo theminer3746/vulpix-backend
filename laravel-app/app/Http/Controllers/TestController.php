@@ -88,7 +88,7 @@ class TestController extends Controller
                 ->firstOrFail();
 
             // Mark the new result as a duplicate
-            $duplicateTest = $this->test->where('uuid', $request->uuid)->firstOrFail();
+            $duplicateTest = $this->test->where('uuid', $request->input('result.uuid'))->firstOrFail();
             $duplicateTest->status = 'duplicate';
             $duplicateTest->application_version = $request->input('result.version');
             $duplicateTest->save();
