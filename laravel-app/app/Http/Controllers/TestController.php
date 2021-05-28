@@ -135,6 +135,7 @@ class TestController extends Controller
             'requesterEmail' => $requesterEmail,
             'error' => $request->input('error'),
         ], $request->input('result'));
+        Log::debug("Result : " . print_r($result, true));
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
         Log::debug("Add result reponse : " . $addResultResponse->body());
 
