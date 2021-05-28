@@ -7,6 +7,7 @@ use App\Models\Test;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class TestController extends Controller
 {
@@ -26,6 +27,7 @@ class TestController extends Controller
             'android_version' => $request->android_version ?? '9.0',
             'forced' => $request->forced ?? false,
             'requester_email' => $request->requester_email,
+            'uuid' => Str::uuid(),
         ]);
 
         return response()->json([], 201);
@@ -74,6 +76,7 @@ class TestController extends Controller
             ->exists();
 
         $test = null;
+        $requesterEmail = null;
         if ($resultForAppVerExists) {
             // We know about this version of the app
 
@@ -84,8 +87,13 @@ class TestController extends Controller
                 ->orderByDesc('created_at')
                 ->firstOrFail();
 
-            // Mark the new result as duplicate 
-            // $this->test->findOrFail($request->uuid);
+            // Mark the new result as a duplicate
+            $duplicateTest = $this->test->where('uuid', $request->uuid)->firstOrFail();
+            $duplicateTest->status = 'duplicate';
+            $duplicateTest->application_version = $request->input('result.version');
+            $duplicateTest->save();
+
+            $requesterEmail = $duplicateTest->requester_email;
         } else {
             // New version of the app
             $test = $this->test->where('application_id', $request->input('appInfo.identifier'))
@@ -94,6 +102,7 @@ class TestController extends Controller
                 ->firstOrFail();
 
             $test->application_version = $request->input('result.version');
+            $requesterEmail = $test->requester_email;
         }
 
         if ($request->input('status') === 'success') {
@@ -123,7 +132,7 @@ class TestController extends Controller
             'applicationId' => $request->input('appInfo.identifier'),
             'version' => $request->input('appInfo.version'),
             'testingMethod' => $request->input('testingMethod'),
-            'requesterEmail' => $test->requester_email,
+            'requesterEmail' => $requesterEmail,
             'error' => $request->input('error'),
         ], $request->input('result'));
         $addResultResponse = Http::post('https://vulpix-backend.herokuapp.com/api/result', $result);
